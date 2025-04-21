@@ -1,0 +1,376 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    position: relative;
+    font-family: 'Segoe UI', sans-serif;
+    background:	#d6e1ea;
+    color: #222;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.overall {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+.side-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center; 
+    width: 55%;
+    background-color: #f0f0f0;
+    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.side-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    justify-content: center; 
+    align-items: center; 
+    text-align: justify;
+    background-color: #c8d9ea;
+    margin: 15px;
+    padding: 30px;
+    border-radius: 10px;
+    height: 700px;
+}
+
+.side-content hr {
+    border: none;
+    border-top: 2px solid #96acc0; 
+    margin: 30px 0; 
+    width: 100%; 
+}
+
+.side-content h4 {
+    margin-bottom: 10px;
+}
+
+.side-content h3:hover {
+    color: #005580;
+}
+
+.side-container h3 {
+    font-size: 1.6rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.side-container h4 {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.side-container p, ul {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+.side-container  ul {
+    list-style-type: disc;
+    margin-left: 20px;
+}
+
+.side-container code {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1rem;
+    background-color: #f4f4f4;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.footer {
+    background-color: #96acc0;
+    width: 100%;
+    height: 9%;
+    margin-top: auto;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+}
+
+.footer-container {
+    background-color: #d6e1ea;
+    width: 97%;
+    height: 65%;
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    border-radius: 10px;
+    padding: 0 45px;
+}
+
+.footer-links {
+    display: flex;
+    gap: 50px;
+}
+
+.footer-links a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: #005580;
+}
+
+.copyright {
+    font-size: 0.95em;
+    color: #333;
+}
+
+.calculator-container {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    width: 45%; 
+    padding: 0 20px; 
+}
+
+.calculator {
+    background: #96acc0;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    height: 85vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+}
+
+h2 {
+    text-align: center;
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    margin-top: -10px;
+}
+
+label {
+    display: block;
+    margin-bottom: 2px;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.input-group input {
+    border: 1px solid #BFC7D1;
+    padding: 3px 10px;
+    font-size: 0.9rem;
+    outline: none;
+    background-color: #ecf2f9;
+    color: #222;
+    border-radius: 0;
+    border: none;
+}
+
+.input-group input:not(:first-child) {
+    border-top: none;
+}
+
+.input-group input:first-child {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    padding-top: 8.5px;
+}
+
+.input-group input:last-child {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding-bottom: 8.5px;
+}
+
+.output-section {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.output-section .result-textarea {
+    width: 100%;
+    padding: 8px;
+    font-size: 0.9rem;
+    border: 2px solid #758da4;
+    border: none;
+    border-radius: 5px;
+    background-color: #ecf2f9;
+    color: #222;
+    min-height: 60px; 
+    white-space: pre-wrap;
+    resize: none;
+
+    pointer-events: none;
+    user-select: none;
+    caret-color: transparent;
+}
+
+.input-group input,
+.output-section .result-textarea {
+    font-weight: normal;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.button-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.button-grid button, .submit-btn {
+    padding: 10px;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background: #c8d9ea;
+    color:#222;
+    transition: background 0.2s ease;
+}
+
+.button-grid button:hover {
+    background:#e7f3ff;
+}
+
+.submit-btn {
+    width: 100%;
+    background-color:#60e76b;
+    color: 	#222;
+    font-weight: bold;
+    padding: 10px;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.submit-btn:hover {
+    background: #42a44a;
+}
+
+
+
+.theme-toggle-container {
+    position: absolute;
+    bottom: 20px; 
+    right: 20px;  
+    z-index: 1000;
+}
+
+#theme-toggle {
+    background-color: rgba(0, 0, 0, 0.5); 
+    color: white; 
+    border: none;
+    padding: 10px;
+    font-size: 1.5em;
+    border-radius: 50%; 
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 55px; 
+    height: 55px; 
+    line-height: 0; 
+    transition: background-color 0.2s ease;
+}
+
+#theme-toggle:hover {
+    background-color: rgba(0, 0, 0, 0.7); 
+}
+
+
+
+
+body.dark {
+    background-color: #222;
+    color: #f0f0f0;
+}
+
+body.dark .calculator {
+    background: #333;
+}
+
+body.dark .side-container {
+    background-color: #999; 
+}
+
+body.dark .side-content {
+    background-color: #666; 
+}
+
+body.dark .side-content hr {
+    border-top: 2px solid #333; 
+}
+
+body.dark .side-content h3:hover {
+    color: #222;
+}
+
+body.dark .side-container code {
+    color: #111;
+}
+
+body.dark .footer {
+    background-color: #777;
+}
+
+body.dark .footer-container {
+    background-color: #555;
+}
+
+body.dark .copyright {
+    color: #fff;
+}
+
+body.dark .footer-links a {
+    color: #fff;
+}
+
+body.dark .footer-links a:hover {
+    color: #000;
+}
+
+body.dark input, body.dark .output-section .result-textarea  {
+    background-color: #fff;
+    color: #333;
+}
+
+body.dark .button-grid button {
+    background: #555;
+    color: white;
+}
+
+body.dark .button-grid button:hover {
+    background: #777;
+}
+
+body.dark #theme-toggle {
+    background-color: rgba(255, 255, 255, 0.2); 
+}
+
+body.dark #theme-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.4); 
+}

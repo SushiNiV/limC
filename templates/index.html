@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Limit Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='site.webmanifest') }}">
+
+    <script>
+        let activeInput = null;
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const exprInput = document.getElementById("expression");
+            const varInput = document.getElementById("variable");
+            const toValueInput = document.querySelector('input[name="to_value"]');
+
+            const inputs = document.querySelectorAll("input");
+            inputs.forEach(input => {
+                input.addEventListener("focus", function () {
+                    activeInput = this;
+                });
+            });
+
+            exprInput.addEventListener("keypress", function (e) {
+                const allowed = /[0-9a-zA-Z\+\-\*\/\^\(\)\.\s]/;
+                if (!allowed.test(e.key)) {
+                    e.preventDefault();
+                }
+            });
+
+            exprInput.addEventListener("keydown", function (e) {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    this.form.requestSubmit();
+                }
+            });
+
+            varInput.addEventListener("keypress", function (e) {
+                if (!/^[a-zA-Z]$/.test(e.key)) {
+                    e.preventDefault();
+                }
+            });
+
+            varInput.addEventListener("keydown", function (e) {
+                if (e.key === "Enter") {
+                    if (!this.value.trim()) {
+                        e.preventDefault();
+                        this.classList.add("input-error");
+                    } else {
+                        e.preventDefault();
+                        toValueInput.focus();
+                    }
+                }
+            });
+
+            varInput.addEventListener("input", function () {
+                if (this.value.trim()) {
+                    this.classList.remove("input-error");
+                }
+            });
+
+            toValueInput.addEventListener("input", function () {
+                const allowedPattern = /^[\d\.\+\-∞]*$/;
+                let value = this.value;
+                if (!allowedPattern.test(value)) {
+                    this.value = value.slice(0, -1);
+                }
+            });
+
+            // Theme toggle logic
+            const themeToggleBtn = document.getElementById("theme-toggle");
+            const currentTheme = localStorage.getItem("theme") || "light";
+            document.body.classList.add(currentTheme);
+            themeToggleBtn.textContent = currentTheme === "dark" ? "☀️" : "🌙";
+
+            themeToggleBtn.addEventListener("click", function () {
+                document.body.classList.toggle("dark");
+                const newTheme = document.body.classList.contains("dark") ? "dark" : "light";
+                themeToggleBtn.textContent = newTheme === "dark" ? "☀️" : "🌙";
+                localStorage.setItem("theme", newTheme);
+            });
+        });
+
+        function insert(value) {
+            if (activeInput) {
+                const id = activeInput.id;
+                if (id === "expression") {
+                    // Handling sqrt and e
+                    if (value === "sqrt") {
+                        activeInput.value += "sqrt(";
+                    } else if (value === "e") {
+                        activeInput.value += "e";
+                    } else {
+                        const allowedExpr = /^[0-9xX+\-*/^().\s]$/;
+                        if (allowedExpr.test(value)) {
+                            activeInput.value += value;
+                        }
+                    }
+                } else if (id === "variable") {
+                    const allowedVar = /^[a-zA-Z]$/;
+                    if (allowedVar.test(value)) {
+                        activeInput.value += value;
+                    }
+                } else if (id === "to_value") {
+                    const allowedToValue = /^[\d.+\-∞]$/;
+                    if (allowedToValue.test(value)) {
+                        activeInput.value += value;
+                    }
+                }
+            }
+        }
+
+        function clearInput() {
+            if (activeInput) {
+                activeInput.value = "";
+            } else {
+                document.getElementById("expression").value = "";
+                document.getElementById("variable").value = "";
+                document.getElementById("to_value").value = "";
+                fetch("/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: "clear_all=1"
+                }).then(() => {
+                    location.reload();
+                });
+            }
+        }
+
+        function deleteChar() {
+            if (activeInput) {
+                activeInput.value = activeInput.value.slice(0, -1);
+            }
+        }
+    </script>
+
+</head>
+<body>
+    <div class="overall">
+            <div class="side-container">
+                <div class="side-content">
+                    <h3> ONLINE LIMIT CALCULATOR</h3>
+                    <p>This <strong>LIMIT CALCULATOR</strong> is a straightforward tool built for students. It helps users compute the limits of mathematical functions as variables approach specific values for <strong>free</strong> with <strong>no sign-up</strong> required! Just enter your expression as the variable approaches a certain value to get <strong>instant results</strong>, as all calculations run in-browser and your <strong>data stays completely private</strong>.</p>
+                    
+                    <hr>
+                    
+                    <h3>LIMIT OF A CONSTANT</h3>
+                    <p>The limit of a constant is always the constant itself. For example, the limit of 5 as x approaches any value is always 5 because constants do not change.</p>
+                    <p>
+                        <code>lim (x → 2) of 5 = <strong>5</strong></code>
+                    </p>
+                    
+                    <hr>
+
+                    <p><strong><i>While this calculator is useful for understanding basic limits, it has some limitations:</i></strong></p>
+                    <ul>
+                        <li>It only handles simple expressions and constants.</li>
+                        <li>It does not support complex functions and symbolic manipulation.</li>
+                        <li>It does not support input of more than one variables.</li>
+                        <li>Currently, <strong>BETA Testing</strong> for limit types other than <i>Limit of a Constant</i>.</li>
+                    </ul>
+                </div>
+                <div class="footer">
+                    <div class="footer-container">
+                        <span class="copyright">@ 2025 SushiNiV™. All Rights Reserved.</span>
+                        <span> | </span>
+                        <div class="footer-links">
+                            <a href="https://www.facebook.com/profile.php?id=61565990177216">Facebook</a>
+                            <a href="https://mail.google.com/">Mail</a>
+                            <a href="https://www.linkedin.com/in/sushane-vendiola-025snv/">LinkedIn</a>
+                            <a href="https://github.com/SushiNiV">GitHub</a>
+                          </div>
+                    </div>
+                </div>
+        </div>
+
+        <div class="calculator-container">
+            <div class="calculator">
+                <h2>LIMIT CALCULATOR</h2>
+                <form method="POST" autocomplete="off">
+                    <input type="hidden" name="limit_type" value="direct">
+                    <div class="input-group">
+                        <input id="expression" name="expression" placeholder="[ expression ]" required value="{{ expression }}">
+                        <input id="variable" name="variable" placeholder="[ variable ]" required pattern="[a-zA-Z]+" title="Only letters allowed" value="{{ variable }}">
+                        <input name="to_value" id="to_value" placeholder="x → [ value ]" required pattern="^[-+]?\d*\.?\d*(?:[eE][-+]?\d+)?|∞$" title="Only numbers, +, -, . and ∞ allowed" value="{{ to_value }}">
+                    </div>
+                    <div class="output-section">
+                        <textarea readonly class="result-textarea" placeholder="Result will appear here...">{% if result %}{{ result }}{% elif error %}Error: {{ error }}{% endif %}</textarea>
+                    </div>
+                    <div class="button-grid">
+                        <button type="button" onclick="insert('sqrt')">sqrt</button>
+                        <button type="button" onclick="insert('e')">e</button>
+                        <button type="button" onclick="insert('∞')">∞</button>
+                        <button type="button" onclick="deleteChar()">DEL</button>
+                        <button type="button" onclick="insert('7')">7</button>
+                        <button type="button" onclick="insert('8')">8</button>
+                        <button type="button" onclick="insert('9')">9</button>
+                        <button type="button" onclick="insert('/')">÷</button>
+                        <button type="button" onclick="insert('4')">4</button>
+                        <button type="button" onclick="insert('5')">5</button>
+                        <button type="button" onclick="insert('6')">6</button>
+                        <button type="button" onclick="insert('*')">×</button>
+                        <button type="button" onclick="insert('1')">1</button>
+                        <button type="button" onclick="insert('2')">2</button>
+                        <button type="button" onclick="insert('3')">3</button>
+                        <button type="button" onclick="insert('-')">−</button>
+                        <button type="button" onclick="insert('0')">0</button>
+                        <button type="button" onclick="insert('.')">.</button>
+                        <button type="button" onclick="insert('+')">+</button>
+                        <button type="button" onclick="insert('^')">^</button>
+                        <button type="button" onclick="insert('x')">x</button>
+                        <button type="button" onclick="insert('(')">(</button>
+                        <button type="button" onclick="insert(')')">)</button>
+                        <button type="button" onclick="clearInput()">CLR</button>
+                    </div>
+                    <button type="submit" class="submit-btn">CALCULATE</button>
+                </form>
+            </div>
+            <div class="theme-toggle-container">
+                <button id="theme-toggle">🌙</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
