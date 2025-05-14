@@ -71,7 +71,6 @@
                 }
             });
 
-            // Theme toggle logic
             const themeToggleBtn = document.getElementById("theme-toggle");
             const currentTheme = localStorage.getItem("theme") || "light";
             document.body.classList.add(currentTheme);
@@ -83,15 +82,37 @@
                 themeToggleBtn.textContent = newTheme === "dark" ? "☀️" : "🌙";
                 localStorage.setItem("theme", newTheme);
             });
+
+            const historyToggleBtn = document.getElementById("history-toggle");
+            const historyWindow = document.getElementById("history-window");
+            const historyList = document.getElementById("history-list");
+
+            historyToggleBtn.addEventListener("click", function () {
+                historyWindow.classList.toggle("hidden");
+            });
+
+            const historyData = {{ session.get('history', []) | tojson | safe }};
+            historyList.innerHTML = "";
+
+            historyData.forEach(item => {
+                const li = document.createElement("li");
+                li.textContent = `lim (${item.variable} → ${item.to_value}) of ${item.expression} = ${item.result}`;
+                li.addEventListener("click", function () {
+                    document.getElementById("expression").value = item.expression;
+                    document.getElementById("variable").value = item.variable;
+                    document.getElementById("to_value").value = item.to_value;
+                    historyWindow.classList.add("hidden");
+                });
+                historyList.appendChild(li);
+            });
         });
 
         function insert(value) {
             if (activeInput) {
                 const id = activeInput.id;
                 if (id === "expression") {
-                    // Handling sqrt and e
-                    if (value === "sqrt") {
-                        activeInput.value += "sqrt(";
+                    if (value === "√") {
+                        activeInput.value += "√(";
                     } else if (value === "e") {
                         activeInput.value += "e";
                     } else {
@@ -152,8 +173,8 @@
                     
                     <h3>LIMIT OF A CONSTANT</h3>
                     <p>The limit of a constant is always the constant itself. For example, the limit of 5 as x approaches any value is always 5 because constants do not change.</p>
-                    <p>
-                        <code>lim (x → 2) of 5 = <strong>5</strong></code>
+                    <p class="code">
+                        <code style="font-size: 1.25rem;">lim (x → 2) of 5 = <strong>5</strong></code>
                     </p>
                     
                     <hr>
@@ -171,11 +192,19 @@
                         <span class="copyright">@ 2025 SushiNiV™. All Rights Reserved.</span>
                         <span> | </span>
                         <div class="footer-links">
-                            <a href="https://www.facebook.com/profile.php?id=61565990177216">Facebook</a>
-                            <a href="https://mail.google.com/">Mail</a>
-                            <a href="https://www.linkedin.com/in/sushane-vendiola-025snv/">LinkedIn</a>
-                            <a href="https://github.com/SushiNiV">GitHub</a>
-                          </div>
+                            <a href="https://www.facebook.com/profile.php?id=61565990177216">
+                                <i class="fab fa-facebook-f"></i> Facebook
+                            </a>
+                            <a href="https://mail.google.com/">
+                                <i class="fas fa-envelope"></i> Mail
+                            </a>
+                            <a href="https://www.linkedin.com/in/sushane-vendiola-025snv/">
+                                <i class="fab fa-linkedin-in"></i> LinkedIn
+                            </a>
+                            <a href="https://github.com/SushiNiV">
+                                <i class="fab fa-github"></i> GitHub
+                            </a>
+                        </div>
                     </div>
                 </div>
         </div>
@@ -193,35 +222,50 @@
                     <div class="output-section">
                         <textarea readonly class="result-textarea" placeholder="Result will appear here...">{% if result %}{{ result }}{% elif error %}Error: {{ error }}{% endif %}</textarea>
                     </div>
-                    <div class="button-grid">
-                        <button type="button" onclick="insert('sqrt')">sqrt</button>
-                        <button type="button" onclick="insert('e')">e</button>
-                        <button type="button" onclick="insert('∞')">∞</button>
-                        <button type="button" onclick="deleteChar()">DEL</button>
-                        <button type="button" onclick="insert('7')">7</button>
-                        <button type="button" onclick="insert('8')">8</button>
-                        <button type="button" onclick="insert('9')">9</button>
-                        <button type="button" onclick="insert('/')">÷</button>
-                        <button type="button" onclick="insert('4')">4</button>
-                        <button type="button" onclick="insert('5')">5</button>
-                        <button type="button" onclick="insert('6')">6</button>
-                        <button type="button" onclick="insert('*')">×</button>
-                        <button type="button" onclick="insert('1')">1</button>
-                        <button type="button" onclick="insert('2')">2</button>
-                        <button type="button" onclick="insert('3')">3</button>
-                        <button type="button" onclick="insert('-')">−</button>
-                        <button type="button" onclick="insert('0')">0</button>
-                        <button type="button" onclick="insert('.')">.</button>
-                        <button type="button" onclick="insert('+')">+</button>
-                        <button type="button" onclick="insert('^')">^</button>
-                        <button type="button" onclick="insert('x')">x</button>
-                        <button type="button" onclick="insert('(')">(</button>
-                        <button type="button" onclick="insert(')')">)</button>
-                        <button type="button" onclick="clearInput()">CLR</button>
-                    </div>
+                  <div class="button-grid">
+                    <button type="button" class="x" onclick="insert('√')"><i class="fas fa-square-root-alt"></i></button>
+                    <button type="button" class="x" onclick="insert('e')"><i class="fa-solid big">𝑒</i></button>
+                    <button type="button" class="x" onclick="insert('∞')"><i class="fa-solid">∞</i></button>
+                    <button type="button" class="red" onclick="deleteChar()"><i class="fa-solid">CLR</i></button>
+
+                    <button type="button" onclick="insert('7')"><i class="fa-solid">7</i></button>
+                    <button type="button" onclick="insert('8')"><i class="fa-solid">8</i></button>
+                    <button type="button" onclick="insert('9')"><i class="fa-solid">9</i></button>
+                    <button type="button" class="op" onclick="insert('/')"><i class="fas fa-divide"></i></button>
+
+                    <button type="button" onclick="insert('4')"><i class="fa-solid">4</i></button>
+                    <button type="button" onclick="insert('5')"><i class="fa-solid">5</i></button>
+                    <button type="button" onclick="insert('6')"><i class="fa-solid">6</i></button>
+                    <button type="button" class="op" onclick="insert('*')"><i class="fas fa-times"></i></button>
+
+                    <button type="button" onclick="insert('1')"><i class="fa-solid">1</i></button>
+                    <button type="button" onclick="insert('2')"><i class="fa-solid">2</i></button>
+                    <button type="button" onclick="insert('3')"><i class="fa-solid">3</i></button>
+                    <button type="button" class="op" onclick="insert('-')"><i class="fas fa-minus"></i></button>
+
+                    <button type="button" class="x dot" onclick="insert('.')"><i class="fa-solid big">.</i></button>
+                    <button type="button" onclick="insert('0')"><i class="fa-solid">0</i></button>
+                    <button type="button" class="x" onclick="insert('^')"><i class="fas fa-superscript"></i></button>
+                    <button type="button" class="op" onclick="insert('+')"><i class="fas fa-plus"></i></button>
+
+                    <button type="button" class="x" onclick="insert('x')"><i class="fa-solid big">𝑥 </i></button>
+                    <button type="button" class="x" onclick="insert('(')"><i class="fa-solid big">(</i></button>
+                    <button type="button" class="x" onclick="insert(')')"><i class="fa-solid big">)</i></button>
+                    <button type="button" class="red" onclick="clearInput()"><i class="fa-solid">DEL</i></button>
+                </div>
                     <button type="submit" class="submit-btn">CALCULATE</button>
                 </form>
             </div>
+
+            <div class="history-toggle-container">
+                <button id="history-toggle">📜</button>
+            </div>
+
+            <div id="history-window" class="history-window hidden">
+                <h4>RECENT HISTORY</h4>
+                <ul id="history-list"></ul>
+            </div>
+
             <div class="theme-toggle-container">
                 <button id="theme-toggle">🌙</button>
             </div>
