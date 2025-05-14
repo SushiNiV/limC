@@ -7,7 +7,13 @@
 body {
     position: relative;
     font-family: 'Segoe UI', sans-serif;
-    background:	#d6e1ea;
+    background: repeating-linear-gradient(
+        45deg,
+        #e2eaf1,
+        #e2eaf1 10px,
+        #d6e1ea 10px,
+        #d6e1ea 20px
+    );
     color: #222;
     display: flex;
     justify-content: center;
@@ -41,7 +47,7 @@ body {
     text-align: justify;
     background-color: #c8d9ea;
     margin: 15px;
-    padding: 30px;
+    padding: 12px 30px;
     border-radius: 10px;
     height: 700px;
 }
@@ -49,7 +55,7 @@ body {
 .side-content hr {
     border: none;
     border-top: 2px solid #96acc0; 
-    margin: 30px 0; 
+    margin: 15px 0; 
     width: 100%; 
 }
 
@@ -65,6 +71,8 @@ body {
     font-size: 1.6rem;
     font-weight: bold;
     margin-bottom: 10px;
+    letter-spacing: 2px;
+    word-spacing: 2px;
 }
 
 .side-container h4 {
@@ -74,7 +82,7 @@ body {
 
 .side-container p, ul {
     font-size: 1rem;
-    line-height: 1.5;
+    line-height: 1.75;
     margin-bottom: 15px;
 }
 
@@ -114,7 +122,7 @@ body {
 
 .footer-links {
     display: flex;
-    gap: 50px;
+    gap: 35px;
 }
 
 .footer-links a {
@@ -125,7 +133,7 @@ body {
 }
 
 .footer-links a:hover {
-    color: #005580;
+    color: #c13f3f;
 }
 
 .copyright {
@@ -143,10 +151,10 @@ body {
 
 .calculator {
     background: #96acc0;
-    padding: 20px;
+    padding: 30px;
     border-radius: 10px;
-    width: 400px;
-    height: 85vh;
+    width: 425px;
+    height: 90vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -155,9 +163,12 @@ body {
 
 h2 {
     text-align: center;
-    font-size: 1.3rem;
+    font-size: 1.75rem;
+    font-weight: 700;
     margin-bottom: 20px;
     margin-top: -10px;
+    letter-spacing: 5px;
+    word-spacing: 10px;
 }
 
 label {
@@ -177,7 +188,7 @@ label {
 .input-group input {
     border: 1px solid #BFC7D1;
     padding: 3px 10px;
-    font-size: 0.9rem;
+    font-size: 1rem;
     outline: none;
     background-color: #ecf2f9;
     color: #222;
@@ -210,7 +221,7 @@ label {
 .output-section .result-textarea {
     width: 100%;
     padding: 8px;
-    font-size: 0.9rem;
+    font-size: 1rem;
     border: 2px solid #758da4;
     border: none;
     border-radius: 5px;
@@ -227,7 +238,7 @@ label {
 
 .input-group input,
 .output-section .result-textarea {
-    font-weight: normal;
+    font-weight: 400;
     font-family: 'Segoe UI', sans-serif;
 }
 
@@ -247,11 +258,43 @@ label {
     cursor: pointer;
     background: #c8d9ea;
     color:#222;
+    letter-spacing: 2.5px;
     transition: background 0.2s ease;
 }
 
 .button-grid button:hover {
     background:#e7f3ff;
+}
+
+button.red {
+    background-color: #D94F4F;
+    color: #ecf2f9;
+}
+
+button.red:hover {
+  background-color: #c13f3f;
+}
+
+button.op {
+    background-color: #FBC26C;
+}
+
+button.op:hover {
+    background-color: #FFE0A3;
+}
+
+button.x {
+    background-color: #6A9ED8;
+    color: #fff;
+}
+
+button.x:hover {
+    background-color: #4F80C1;
+}
+
+.button-grid i.big {
+  font-size: 1.5em;
+  line-height: 1; 
 }
 
 .submit-btn {
@@ -260,7 +303,7 @@ label {
     color: 	#222;
     font-weight: bold;
     padding: 10px;
-    font-size: 0.9rem;
+    font-size: 1.2rem;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -269,18 +312,27 @@ label {
 
 .submit-btn:hover {
     background: #42a44a;
+    color: #ecf2f9;
 }
 
 
 
 .theme-toggle-container {
     position: absolute;
-    bottom: 20px; 
+    top: 75px; 
     right: 20px;  
     z-index: 1000;
 }
 
-#theme-toggle {
+.history-toggle-container {
+    position: absolute;
+    top: 15px; 
+    right: 20px;  
+    z-index: 1000;
+}
+
+#theme-toggle,
+#history-toggle {
     background-color: rgba(0, 0, 0, 0.5); 
     color: white; 
     border: none;
@@ -291,21 +343,110 @@ label {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 55px; 
-    height: 55px; 
+    width: 50px; 
+    height: 50px; 
     line-height: 0; 
     transition: background-color 0.2s ease;
 }
 
-#theme-toggle:hover {
+#theme-toggle {
+    font-size: 1.5em;
+}
+
+#history-toggle {
+    font-size: 1.25em;
+}
+
+#theme-toggle:hover,
+#history-toggle:hover {
     background-color: rgba(0, 0, 0, 0.7); 
 }
 
+#history-window {
+    position: fixed;
+    right: 20px;
+    top: 70px;
+    width: 260px;
+    max-height: 300px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    overflow-y: auto;
+    z-index: 1001;
+    font-size: 0.95rem;
+    font-family: inherit;
+}
 
+.history-window {
+    transition: all 0.3s ease;
+    opacity: 1;
+}
 
+#history-window h4 {
+    margin-bottom: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+#history-list {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+#history-list li {
+    padding: 6px 10px;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#history-list li:first-child {
+    border-top: 2px solid #999;
+}
+
+#history-list li:last-child {
+    border-bottom: 2px solid #999;
+}
+
+#history-list li:hover {
+    background-color: #e1e9f0;
+}
+
+.history-window.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-10px);
+}
+
+.hidden {
+    display: none !important;
+}
+
+body.dark #history-window {
+    background-color: #444;
+    color: white;
+}
+
+body.dark #history-list li {
+    border-bottom: 1px solid #666;
+}
+
+body.dark #history-list li:hover {
+    background-color: #555;
+}
 
 body.dark {
-    background-color: #222;
+    background: repeating-linear-gradient(
+        45deg,
+        #2a2a2a,
+        #2a2a2a 10px,
+        #222 10px,
+        #222 20px
+    );
     color: #f0f0f0;
 }
 
@@ -350,7 +491,7 @@ body.dark .footer-links a {
 }
 
 body.dark .footer-links a:hover {
-    color: #000;
+    color: #E0A84B;
 }
 
 body.dark input, body.dark .output-section .result-textarea  {
@@ -367,10 +508,39 @@ body.dark .button-grid button:hover {
     background: #777;
 }
 
-body.dark #theme-toggle {
+body.dark button.red {
+  background-color: #D94F4F;
+  color: #ffffff;
+}
+
+body.dark button.red:hover {
+  background-color: #b83838;
+}
+
+body.dark button.op {
+  background-color: #E0A84B;
+  color: #ffffff;
+}
+
+body.dark button.op:hover {
+  background-color: #FFCD72;
+}
+
+body.dark button.x {
+  background-color: #5C8DC9;
+  color: #ffffff;
+}
+
+body.dark button.x:hover {
+  background-color: #3F6FAE;
+}
+
+body.dark #theme-toggle,
+body.dark #history-toggle {
     background-color: rgba(255, 255, 255, 0.2); 
 }
 
-body.dark #theme-toggle:hover {
+body.dark #theme-toggle:hover,
+body.dark #history-toggle:hover  {
     background-color: rgba(255, 255, 255, 0.4); 
 }
