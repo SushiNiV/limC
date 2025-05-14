@@ -5,7 +5,7 @@ import traceback
 import re
 
 app = Flask(__name__)
-app.secret_key = 'supersecret'
+app.secret_key = 'sushi'
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -24,14 +24,15 @@ def index():
             session['variable'] = variable
             session['to_value'] = to_value
 
-            expression = expression.replace('^', '**') 
-            expression = re.sub(r'(\d)([a-zA-Z])', r'\1*\2', expression)  
-            expression = expression.replace('e', 'E')  
+            expression = expression.replace('√', 'sqrt')
+            expression = expression.replace('^', '**')
+            expression = expression.replace('e', 'E')
 
-            # Define variable symbol
+            expression = re.sub(r'(\d)([a-zA-Z\(])', r'\1*\2', expression)
+            expression = re.sub(r'(\))(\d|[a-zA-Z\(])', r'\1*\2', expression)
+
             x = Symbol(variable)
 
-            # Convert ∞, -∞
             to_value_sym = {'∞': oo, '-∞': -oo}.get(to_value.strip(), to_value)
             to_value_sym = sympify(to_value_sym)
 
@@ -52,6 +53,19 @@ def index():
                 session['result'] = str(result)
                 session['limit_type'] = limit_type
                 session.pop('error', None)
+
+                history = session.get('history', [])
+                new_entry = {
+                    'expression': expression,
+                    'variable': variable,
+                    'to_value': to_value,
+                    'result': str(result)
+                }
+
+                history.insert(0, new_entry)
+                history = history[:5]
+
+                session['history'] = history
 
             session['from_post'] = True
 
